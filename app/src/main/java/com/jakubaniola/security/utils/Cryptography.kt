@@ -1,4 +1,4 @@
-package com.jakubaniola.security
+package com.jakubaniola.security.utils
 
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
