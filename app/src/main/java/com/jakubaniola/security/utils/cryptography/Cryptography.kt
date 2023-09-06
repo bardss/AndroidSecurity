@@ -14,29 +14,31 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
-@RequiresApi(Build.VERSION_CODES.M)
-class Cryptography {
+typealias PairIvAndCiphertext = Pair<String, String>
 
+@RequiresApi(Build.VERSION_CODES.M)
+class Cryptography(
+    private val algorithm: String = KeyProperties.KEY_ALGORITHM_AES,
+    private val blockMode: String = KeyProperties.BLOCK_MODE_CBC,
+    private val padding: String = KeyProperties.ENCRYPTION_PADDING_PKCS7,
+) {
+
+    private val KEY_STORE_NAME = "AndroidKeyStore"
     private val keystoreAlias = "secret"
+    val transformation = "$algorithm/$blockMode/$padding"
 
     private val keystore = KeyStore.getInstance(KEY_STORE_NAME).apply {
         load(null)
     }
 
     private val encryptCipher = Cipher
-        .getInstance(TRANSFORMATION)
+        .getInstance(transformation)
         .apply {
             init(Cipher.ENCRYPT_MODE, getKey())
         }
 
-    private fun getDecryptCipher() = Cipher
-        .getInstance(TRANSFORMATION)
-        .apply {
-            init(Cipher.DECRYPT_MODE, getKey())
-        }
-
     private fun getDecryptCipherForIv(iv: ByteArray) = Cipher
-        .getInstance(TRANSFORMATION)
+        .getInstance(transformation)
         .apply {
             init(Cipher.DECRYPT_MODE, getKey(), IvParameterSpec(iv))
         }
@@ -48,14 +50,14 @@ class Cryptography {
 
     private fun createKey(): SecretKey {
         return KeyGenerator
-            .getInstance(ALGORITHM)
+            .getInstance(algorithm)
             .apply {
                 val spec = KeyGenParameterSpec.Builder(
                     keystoreAlias,
                     KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
                 )
-                    .setBlockModes(BLOCK_MODE)
-                    .setEncryptionPaddings(PADDING)
+                    .setBlockModes(blockMode)
+                    .setEncryptionPaddings(padding)
                     .setUserAuthenticationRequired(false)
                     .setRandomizedEncryptionRequired(true)
                     .build()
@@ -64,14 +66,18 @@ class Cryptography {
             .generateKey()
     }
 
-    fun encrypt(plaintext: String): String {
+    fun encrypt(plaintext: String): PairIvAndCiphertext {
         val bytes = encryptCipher.doFinal(plaintext.toByteArray())
-        return Base64.encodeToString(bytes, Base64.DEFAULT)
+        return Pair(
+            Base64.encodeToString(encryptCipher.iv, Base64.DEFAULT),
+            Base64.encodeToString(bytes, Base64.DEFAULT)
+        )
     }
 
-    fun decrypt(ciphertext: String): String {
+    fun decrypt(iv: String, ciphertext: String): String {
         val encryptedData = Base64.decode(ciphertext, Base64.DEFAULT)
-        val decodedData = getDecryptCipher().doFinal(encryptedData)
+        val ivBytes = Base64.decode(iv, Base64.DEFAULT)
+        val decodedData = getDecryptCipherForIv(ivBytes).doFinal(encryptedData)
         return String(decodedData)
     }
 
@@ -98,13 +104,5 @@ class Cryptography {
 
             getDecryptCipherForIv(iv).doFinal(encryptedBytes)
         }
-    }
-
-    companion object {
-        private const val ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
-        private const val BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC
-        private const val PADDING = KeyProperties.ENCRYPTION_PADDING_PKCS7
-        private const val TRANSFORMATION = "$ALGORITHM/$BLOCK_MODE/$PADDING"
-        private const val KEY_STORE_NAME = "AndroidKeyStore"
     }
 }

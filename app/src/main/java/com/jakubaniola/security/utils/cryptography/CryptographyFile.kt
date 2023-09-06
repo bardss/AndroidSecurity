@@ -9,10 +9,10 @@ import java.io.FileOutputStream
 @RequiresApi(Build.VERSION_CODES.M)
 class CryptographyFile(
     private val fileDir: File,
-    private val secretFileName: String = SECRET_FILE_NAME
+    private val secretFileName: String = DEFAULT_SECRET_FILE_NAME
 ) {
 
-    private val cryptography = Cryptography()
+    val cryptography = Cryptography()
 
     fun encrypt(plaintext: String): String {
         val bytes = plaintext.encodeToByteArray()
@@ -36,6 +36,6 @@ class CryptographyFile(
     }
 
     companion object {
-        private const val SECRET_FILE_NAME = "secret.txt"
+        private const val DEFAULT_SECRET_FILE_NAME = "secret.txt"
     }
 }

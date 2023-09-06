@@ -29,7 +29,7 @@ fun CryptographyUi(fileDir: File) {
     var isCryptographyByFileSelected by remember {
         mutableStateOf(true)
     }
-    var isCryptographyNotByFileSelected by remember {
+    var isCryptographySelected by remember {
         mutableStateOf(false)
     }
 
@@ -48,19 +48,20 @@ fun CryptographyUi(fileDir: File) {
             selected = isCryptographyByFileSelected,
         ) {
             isCryptographyByFileSelected = true
-            isCryptographyNotByFileSelected = false
+            isCryptographySelected = false
         }
 
         RadioTextButton(
             text = "Cryptography NOT by file",
-            selected = isCryptographyNotByFileSelected,
+            selected = isCryptographySelected,
         ) {
             isCryptographyByFileSelected = false
-            isCryptographyNotByFileSelected = true
+            isCryptographySelected = true
         }
 
-        if (isCryptographyByFileSelected) {
-            CryptographyFileUi(fileDir)
+        when {
+            isCryptographyByFileSelected -> CryptographyFileUi(fileDir)
+            isCryptographySelected -> CryptographyUi()
         }
     }
 }
@@ -72,15 +73,21 @@ fun CryptographyFileUi(fileDir: File) {
         mutableStateOf("")
     }
 
-    var encryptionInput by remember {
+    var encryptionOutput by remember {
         mutableStateOf("")
     }
 
-    var decryptionInput by remember {
+    var decryptionOutput by remember {
         mutableStateOf("")
     }
 
     val cryptographyFile = CryptographyFile(fileDir)
+
+    Text("Algorithm:")
+    Text(
+        text = cryptographyFile.cryptography.transformation,
+        fontWeight = FontWeight.Bold
+    )
 
     TextField(
         modifier = Modifier
@@ -95,27 +102,102 @@ fun CryptographyFileUi(fileDir: File) {
         modifier = Modifier
             .padding(8.dp, 8.dp),
         onClick = {
-            encryptionInput = cryptographyFile.encrypt(input)
+            encryptionOutput = cryptographyFile.encrypt(input)
         }
     ) { Text("Encrypt to file") }
 
     Text("Encrypted output (starts with IV):")
     Text(
-        text = encryptionInput,
-        fontWeight = FontWeight.Medium
+        text = encryptionOutput,
+        fontWeight = FontWeight.Bold
     )
 
     Button(
         modifier = Modifier
             .padding(8.dp, 8.dp),
         onClick = {
-            decryptionInput = cryptographyFile.decrypt()
+            decryptionOutput = cryptographyFile.decrypt()
         }
     ) { Text("Decrypt from file") }
 
     Text("Decrypted from file output:")
     Text(
-        text = decryptionInput,
-        fontWeight = FontWeight.Medium
+        text = decryptionOutput,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@RequiresApi(Build.VERSION_CODES.M)
+@Composable
+fun CryptographyUi() {
+    var input by remember {
+        mutableStateOf("")
+    }
+
+    var encryptionIv by remember {
+        mutableStateOf("")
+    }
+
+    var encryptionOutput by remember {
+        mutableStateOf("")
+    }
+
+    var decryptionOutput by remember {
+        mutableStateOf("")
+    }
+
+    val cryptography = Cryptography()
+
+    Text("Algorithm:")
+    Text(
+        text = cryptography.transformation,
+        fontWeight = FontWeight.Bold
+    )
+
+    TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 8.dp),
+        value = input,
+        onValueChange = { input = it },
+        label = { Text("Input") }
+    )
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            val encryptionOutputPair = cryptography.encrypt(input)
+            encryptionIv = encryptionOutputPair.first
+            encryptionOutput = encryptionOutputPair.second
+        }
+    ) { Text("Encrypt") }
+
+    Text("IV:")
+    Text(
+        text = encryptionIv,
+        fontWeight = FontWeight.Bold
+    )
+
+    Text("Encrypted output:")
+    Text(
+        text = encryptionOutput,
+        fontWeight = FontWeight.Bold
+    )
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            decryptionOutput = cryptography.decrypt(
+                encryptionIv, encryptionOutput
+            )
+        }
+    ) { Text("Decrypt") }
+
+    Text("Decrypted:")
+    Text(
+        text = decryptionOutput,
+        fontWeight = FontWeight.Bold
     )
 }
