@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.jakubaniola.security.ui.CryptographyUi
+import com.jakubaniola.security.ui.LockScreenHandle
 import com.jakubaniola.security.ui.theme.SecurityTheme
 
 class MainActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package com.jakubaniola.security
+package com.jakubaniola.security.ui
 
 import android.content.Context
 import androidx.compose.material3.AlertDialog

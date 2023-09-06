@@ -5,7 +5,6 @@ package com.jakubaniola.security.ui
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -19,86 +18,104 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.jakubaniola.security.utils.Cryptography
-import com.jakubaniola.security.ui.theme.SecurityTheme
+import com.jakubaniola.security.utils.cryptography.Cryptography
+import com.jakubaniola.security.utils.cryptography.CryptographyFile
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun CryptographyUi(fileDir: File) {
-    var message by remember {
-        mutableStateOf("")
+    var isCryptographyByFileSelected by remember {
+        mutableStateOf(true)
     }
-
-    var result by remember {
-        mutableStateOf("")
+    var isCryptographyNotByFileSelected by remember {
+        mutableStateOf(false)
     }
-
-    val cryptography = Cryptography()
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(8.dp)
     ) {
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 8.dp),
-            value = message,
-            onValueChange = { message = it }
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 8.dp),
-        ) {
-            Button(
-                modifier = Modifier
-                    .weight(1f),
-                onClick = {
-                    val bytes = message.encodeToByteArray()
-                    val file = File(fileDir, "secret.txt")
-                    if (!file.exists()) {
-                        file.createNewFile()
-                    }
-                    val fos = FileOutputStream(file)
-
-                    result = cryptography.encrypt(
-                        byteArray = bytes,
-                        outputStream = fos
-                    ).decodeToString()
-                }
-            ) { Text("Encrypt") }
-            Button(
-                modifier = Modifier
-                    .weight(1f),
-                onClick = {
-                    val file = File(fileDir, "secret.text")
-                    message = cryptography.decrypt(
-                        inputStream = FileInputStream(file)
-                    ).decodeToString()
-                }
-            ) { Text("Decrypt") }
-        }
-
-        Text("Result:")
         Text(
-            text = result,
+            text = "Type:",
             fontWeight = FontWeight.Bold
         )
+
+        RadioTextButton(
+            text = "Cryptography by file",
+            selected = isCryptographyByFileSelected,
+        ) {
+            isCryptographyByFileSelected = true
+            isCryptographyNotByFileSelected = false
+        }
+
+        RadioTextButton(
+            text = "Cryptography NOT by file",
+            selected = isCryptographyNotByFileSelected,
+        ) {
+            isCryptographyByFileSelected = false
+            isCryptographyNotByFileSelected = true
+        }
+
+        if (isCryptographyByFileSelected) {
+            CryptographyFileUi(fileDir)
+        }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    SecurityTheme {
-        CryptographyUi(File(""))
+fun CryptographyFileUi(fileDir: File) {
+    var input by remember {
+        mutableStateOf("")
     }
+
+    var encryptionInput by remember {
+        mutableStateOf("")
+    }
+
+    var decryptionInput by remember {
+        mutableStateOf("")
+    }
+
+    val cryptographyFile = CryptographyFile(fileDir)
+
+    TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 8.dp),
+        value = input,
+        onValueChange = { input = it },
+        label = { Text("Input") }
+    )
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            encryptionInput = cryptographyFile.encrypt(input)
+        }
+    ) { Text("Encrypt to file") }
+
+    Text("Encrypted output (starts with IV):")
+    Text(
+        text = encryptionInput,
+        fontWeight = FontWeight.Medium
+    )
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            decryptionInput = cryptographyFile.decrypt()
+        }
+    ) { Text("Decrypt from file") }
+
+    Text("Decrypted from file output:")
+    Text(
+        text = decryptionInput,
+        fontWeight = FontWeight.Medium
+    )
 }
