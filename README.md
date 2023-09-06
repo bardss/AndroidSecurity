@@ -17,6 +17,7 @@ TODO:
 3. Proguard
 4. Safe API keys
 5. Certificate pinning
+6. Block screen recording and screenshots
 
 ## Materials
 - Guide to Encryption & Decryption in Android (Keystore, Ciphers and more) https://www.youtube.com/watch?v=aaSck7jBDbw
