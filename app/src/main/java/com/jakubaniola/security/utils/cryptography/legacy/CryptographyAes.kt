@@ -1,4 +1,4 @@
-package com.jakubaniola.security.utils.cryptography
+package com.jakubaniola.security.utils.cryptography.legacy
 
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.KeyStore
-import java.security.KeyStore.SecretKeyEntry
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -17,40 +16,37 @@ import javax.crypto.spec.IvParameterSpec
 typealias PairIvAndCiphertext = Pair<String, String>
 
 @RequiresApi(Build.VERSION_CODES.M)
-class Cryptography(
+class CryptographyAes(
     private val algorithm: String = KeyProperties.KEY_ALGORITHM_AES,
     private val blockMode: String = KeyProperties.BLOCK_MODE_CBC,
     private val padding: String = KeyProperties.ENCRYPTION_PADDING_PKCS7,
 ) {
 
-    private val KEY_STORE_NAME = "AndroidKeyStore"
+    private val keystoreName = "AndroidKeyStore"
     private val keystoreAlias = "secret"
     val transformation = "$algorithm/$blockMode/$padding"
 
-    private val keystore = KeyStore.getInstance(KEY_STORE_NAME).apply {
+    private val keystore = KeyStore.getInstance(keystoreName).apply {
         load(null)
     }
 
-    private val encryptCipher = Cipher
-        .getInstance(transformation)
+    private val encryptCipher = Cipher.getInstance(transformation)
         .apply {
             init(Cipher.ENCRYPT_MODE, getKey())
         }
 
-    private fun getDecryptCipherForIv(iv: ByteArray) = Cipher
-        .getInstance(transformation)
+    private fun getDecryptCipherForIv(iv: ByteArray) = Cipher.getInstance(transformation)
         .apply {
             init(Cipher.DECRYPT_MODE, getKey(), IvParameterSpec(iv))
         }
 
     private fun getKey(): SecretKey {
-        val existingKey = keystore.getEntry(keystoreAlias, null) as SecretKeyEntry?
+        val existingKey = keystore.getEntry(keystoreAlias, null) as KeyStore.SecretKeyEntry?
         return existingKey?.secretKey ?: createKey()
     }
 
     private fun createKey(): SecretKey {
-        return KeyGenerator
-            .getInstance(algorithm)
+        return KeyGenerator.getInstance(algorithm)
             .apply {
                 val spec = KeyGenParameterSpec.Builder(
                     keystoreAlias,

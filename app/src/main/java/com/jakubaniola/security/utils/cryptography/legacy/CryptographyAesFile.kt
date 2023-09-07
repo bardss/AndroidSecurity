@@ -1,4 +1,4 @@
-package com.jakubaniola.security.utils.cryptography
+package com.jakubaniola.security.utils.cryptography.legacy
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -7,12 +7,12 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 @RequiresApi(Build.VERSION_CODES.M)
-class CryptographyFile(
+class CryptographyAesFile(
     private val fileDir: File,
     private val secretFileName: String = DEFAULT_SECRET_FILE_NAME
 ) {
 
-    val cryptography = Cryptography()
+    val cryptography = CryptographyAes()
 
     fun encrypt(plaintext: String): String {
         val bytes = plaintext.encodeToByteArray()
