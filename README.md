@@ -1,4 +1,4 @@
-# Cryptography
+# 🛡️ Android Security
 
 Repository to learn and play with Android security.
 
@@ -8,9 +8,10 @@ Min. Sdk 21 - Android 5
 
 Currently:
 1. Lock screen required
-2. Cryptography - encrypt and decrypt file with AES - Android M+ (23+)
-3. Cryptography - encrypt and decrypt text with AES - Android M+ (23+)
-4. EncryptedSharedPreferences
+2. Legacy: Cryptography - encrypt and decrypt file with AES - Android M+ (23+)
+3. Legacy: Cryptography - encrypt and decrypt text with AES - Android M+ (23+)
+4. Jetpack Security (alpha): EncryptedSharedPreferences
+5. Jetpack Security (alpha): Cryptograhy - encrypt and decrypt text with AES
 
 TODO:
 1. Cryptography - encrypt and decrypt - Android 21+
