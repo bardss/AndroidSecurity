@@ -9,10 +9,11 @@ Repository to learn and play with Android security.
 
 Currently:
 1. Lock screen required
-2. Legacy: Cryptography - encrypt and decrypt file with AES - Android M+ (23+)
-3. Legacy: Cryptography - encrypt and decrypt text with AES - Android M+ (23+)
-4. Jetpack Security (alpha): EncryptedSharedPreferences
-5. Jetpack Security (alpha): Cryptography - encrypt and decrypt text with AES
+2. Legacy: Cryptography AES - encrypt and decrypt file - Android M+ (23+)
+3. Legacy: Cryptography AES - encrypt and decrypt text - Android M+ (23+)
+4. Legacy: Cryptography RSA - encrypt and decrypt text - Android Lollipop+ (21+)
+5. Jetpack Security (alpha): EncryptedSharedPreferences
+6. Jetpack Security (alpha): Cryptography AES - encrypt and decrypt file
 
 TODO:
 1. Cryptography - encrypt and decrypt - Android 21+
