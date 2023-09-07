@@ -37,7 +37,7 @@ Or Jetpack Security library (but it is in alpha with issues) or cryptography wit
 
 2. **In AES - does the Initialization Vector need to be kept secret?**
 
-No. Source: https://support.google.com/faqs/answer/9450925?hl=en
+No. Source: https://support.google.com/faqs/answer/9450925?hl=en and https://stackoverflow.com/questions/9049789/aes-encryption-key-versus-iv
 
 3. **In legacy cryptography - does an alias need to be kept secret?**
 
