@@ -16,12 +16,11 @@ Currently:
 6. Jetpack Security (alpha): Cryptography AES - encrypt and decrypt file
 
 TODO:
-1. Cryptography - encrypt and decrypt - Android 21+
-2. Hash functions
-3. Proguard
-4. Safe API keys
-5. Certificate pinning
-6. Block screen recording and screenshots
+1. Hash functions
+2. Proguard
+3. Safe API keys
+4. Certificate pinning
+5. Block screen recording and screenshots
 
 ## Materials
 - Guide to Encryption & Decryption in Android (Keystore, Ciphers, and more) https://www.youtube.com/watch?v=aaSck7jBDbw
