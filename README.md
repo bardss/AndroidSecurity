@@ -2,7 +2,8 @@
 
 Repository to learn and play with Android security.
 
-Min. Sdk 21 - Android 5
+- Min. SDK set to 21
+- UI built with Compose
 
 ## Content
 
