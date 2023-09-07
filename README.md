@@ -11,7 +11,7 @@ Currently:
 2. Legacy: Cryptography - encrypt and decrypt file with AES - Android M+ (23+)
 3. Legacy: Cryptography - encrypt and decrypt text with AES - Android M+ (23+)
 4. Jetpack Security (alpha): EncryptedSharedPreferences
-5. Jetpack Security (alpha): Cryptograhy - encrypt and decrypt text with AES
+5. Jetpack Security (alpha): Cryptography - encrypt and decrypt text with AES
 
 TODO:
 1. Cryptography - encrypt and decrypt - Android 21+
@@ -22,7 +22,23 @@ TODO:
 6. Block screen recording and screenshots
 
 ## Materials
-- Guide to Encryption & Decryption in Android (Keystore, Ciphers and more) https://www.youtube.com/watch?v=aaSck7jBDbw
+- Guide to Encryption & Decryption in Android (Keystore, Ciphers, and more) https://www.youtube.com/watch?v=aaSck7jBDbw
 - Secure data in Android https://proandroiddev.com/secure-data-in-android-encryption-7eda33e68f58
 - Encryption Tutorial For Android: Getting Started https://www.kodeco.com/778533-encryption-tutorial-for-android-getting-started?page=2
 - Google Help: Remediation for Unsafe Cryptographic Encryption https://support.google.com/faqs/answer/9450925?hl=en
+
+## FAQ
+
+(Last updated 07.09.2023)
+
+1. **What encryption to use with the Android version before Marshmellow (23)?**
+
+Or Jetpack Security library (but it is in alpha with issues) or cryptography with RSA.
+
+2. **In AES - does the Initialization Vector need to be kept secret?**
+
+No. Source: https://support.google.com/faqs/answer/9450925?hl=en
+
+3. **In legacy cryptography - does an alias need to be kept secret?**
+
+No. Source: https://stackoverflow.com/questions/49420586/how-to-safely-save-alias-key-of-android-keystore
