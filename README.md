@@ -10,6 +10,7 @@ Currently:
 1. Lock screen required
 2. Cryptography - encrypt and decrypt file with AES - Android M+ (23+)
 3. Cryptography - encrypt and decrypt text with AES - Android M+ (23+)
+4. EncryptedSharedPreferences
 
 TODO:
 1. Cryptography - encrypt and decrypt - Android 21+
