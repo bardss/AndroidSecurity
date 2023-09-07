@@ -3,7 +3,6 @@ package com.jakubaniola.security.utils.cryptography.jetpacksecurity
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.charset.StandardCharsets
 
@@ -19,12 +18,12 @@ class CryptographyJetpackSecurityFile(
         .build()
     private val fileEncryptionScheme = EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
 
-    fun encrypt(plaintext: String): ByteArray {
+    fun encrypt(plaintext: String): String {
         val file = File(fileDir, secretFileName)
         return encrypt(file, plaintext)
     }
 
-    private fun encrypt(file: File, plaintext: String): ByteArray {
+    private fun encrypt(file: File, plaintext: String): String {
         val encryptedFile = EncryptedFile.Builder(
             applicationContext,
             file,
@@ -42,7 +41,7 @@ class CryptographyJetpackSecurityFile(
             flush()
             close()
         }
-        return fileContent
+        return file.readText(Charsets.UTF_8)
     }
 
     fun decrypt(): String {
@@ -58,15 +57,10 @@ class CryptographyJetpackSecurityFile(
             fileEncryptionScheme
         ).build()
 
-        val inputStream = encryptedFile.openFileInput()
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        var nextByte: Int = inputStream.read()
-        while (nextByte != -1) {
-            byteArrayOutputStream.write(nextByte)
-            nextByte = inputStream.read()
-        }
-
-        return byteArrayOutputStream.toByteArray().toString()
+        return encryptedFile
+            .openFileInput()
+            .bufferedReader()
+            .readText()
     }
 
     companion object {

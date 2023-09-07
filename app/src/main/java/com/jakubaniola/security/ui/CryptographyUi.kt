@@ -58,7 +58,7 @@ fun CryptographyUi(fileDir: File) {
         )
 
         RadioTextButton(
-            text = "Cryptography AES by file",
+            text = "Legacy: Cryptography File with AES",
             selected = isCryptographyByFileSelected,
         ) {
             isCryptographyByFileSelected = true
@@ -68,7 +68,7 @@ fun CryptographyUi(fileDir: File) {
         }
 
         RadioTextButton(
-            text = "Cryptography AES text",
+            text = "Legacy: Cryptography Text with AES",
             selected = isCryptographySelected,
         ) {
             isCryptographyByFileSelected = false
@@ -78,7 +78,7 @@ fun CryptographyUi(fileDir: File) {
         }
 
         RadioTextButton(
-            text = "Cryptography Jetpack Security AES by file",
+            text = "Jetpack Security: Cryptography File with AES",
             selected = isCryptographyByFileJetpackSecuritySelected,
         ) {
             isCryptographyByFileSelected = false
@@ -87,7 +87,7 @@ fun CryptographyUi(fileDir: File) {
             isEncryptedSharedPreferences = false
         }
         RadioTextButton(
-            text = "EncryptedSharedPreferences",
+            text = "Jetpack Security: EncryptedSharedPreferences with AES",
             selected = isEncryptedSharedPreferences,
         ) {
             isCryptographyByFileSelected = false
@@ -277,7 +277,7 @@ fun CryptographyJetpackSecurityFileUi(fileDir: File) {
         modifier = Modifier
             .padding(8.dp, 8.dp),
         onClick = {
-            encryptionOutput = cryptography.encrypt(input).toString()
+            encryptionOutput = cryptography.encrypt(input)
         }
     ) { Text("Encrypt to file") }
 
