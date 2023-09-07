@@ -25,3 +25,4 @@ TODO:
 - Guide to Encryption & Decryption in Android (Keystore, Ciphers and more) https://www.youtube.com/watch?v=aaSck7jBDbw
 - Secure data in Android https://proandroiddev.com/secure-data-in-android-encryption-7eda33e68f58
 - Encryption Tutorial For Android: Getting Started https://www.kodeco.com/778533-encryption-tutorial-for-android-getting-started?page=2
+- Google Help: Remediation for Unsafe Cryptographic Encryption https://support.google.com/faqs/answer/9450925?hl=en
