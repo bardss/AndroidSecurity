@@ -23,7 +23,7 @@ class CryptographyAes(
 ) {
 
     private val keystoreName = "AndroidKeyStore"
-    private val keystoreAlias = "secret"
+    private val keystoreAlias = "secret-aes"
     val transformation = "$algorithm/$blockMode/$padding"
 
     private val keystore = KeyStore.getInstance(keystoreName).apply {

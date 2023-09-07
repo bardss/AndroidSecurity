@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.jakubaniola.security.utils.cryptography.legacy.CryptographyRsa
 import com.jakubaniola.security.utils.cryptography.legacy.CryptographyAes
 import com.jakubaniola.security.utils.cryptography.legacy.CryptographyAesFile
 import com.jakubaniola.security.utils.cryptography.jetpacksecurity.CryptographyJetpackSecurityFile
@@ -31,10 +32,13 @@ import java.io.File
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun CryptographyUi(fileDir: File) {
-    var isCryptographyByFileSelected by remember {
+    var isCryptographyAesByFileSelected by remember {
         mutableStateOf(true)
     }
-    var isCryptographySelected by remember {
+    var isCryptographyAesSelected by remember {
+        mutableStateOf(false)
+    }
+    var isCryptographyRsaSelected by remember {
         mutableStateOf(false)
     }
     var isCryptographyByFileJetpackSecuritySelected by remember {
@@ -59,20 +63,33 @@ fun CryptographyUi(fileDir: File) {
 
         RadioTextButton(
             text = "Legacy: Cryptography File with AES",
-            selected = isCryptographyByFileSelected,
+            selected = isCryptographyAesByFileSelected,
         ) {
-            isCryptographyByFileSelected = true
-            isCryptographySelected = false
+            isCryptographyAesByFileSelected = true
+            isCryptographyAesSelected = false
+            isCryptographyRsaSelected = false
             isCryptographyByFileJetpackSecuritySelected = false
             isEncryptedSharedPreferences = false
         }
 
         RadioTextButton(
             text = "Legacy: Cryptography Text with AES",
-            selected = isCryptographySelected,
+            selected = isCryptographyAesSelected,
         ) {
-            isCryptographyByFileSelected = false
-            isCryptographySelected = true
+            isCryptographyAesByFileSelected = false
+            isCryptographyAesSelected = true
+            isCryptographyRsaSelected = false
+            isCryptographyByFileJetpackSecuritySelected = false
+            isEncryptedSharedPreferences = false
+        }
+
+        RadioTextButton(
+            text = "Legacy: Cryptography Text with RSA",
+            selected = isCryptographyRsaSelected,
+        ) {
+            isCryptographyAesByFileSelected = false
+            isCryptographyAesSelected = false
+            isCryptographyRsaSelected = true
             isCryptographyByFileJetpackSecuritySelected = false
             isEncryptedSharedPreferences = false
         }
@@ -81,8 +98,9 @@ fun CryptographyUi(fileDir: File) {
             text = "Jetpack Security: Cryptography File with AES",
             selected = isCryptographyByFileJetpackSecuritySelected,
         ) {
-            isCryptographyByFileSelected = false
-            isCryptographySelected = false
+            isCryptographyAesByFileSelected = false
+            isCryptographyAesSelected = false
+            isCryptographyRsaSelected = false
             isCryptographyByFileJetpackSecuritySelected = true
             isEncryptedSharedPreferences = false
         }
@@ -90,15 +108,17 @@ fun CryptographyUi(fileDir: File) {
             text = "Jetpack Security: EncryptedSharedPreferences with AES",
             selected = isEncryptedSharedPreferences,
         ) {
-            isCryptographyByFileSelected = false
-            isCryptographySelected = false
+            isCryptographyAesByFileSelected = false
+            isCryptographyAesSelected = false
+            isCryptographyRsaSelected = false
             isCryptographyByFileJetpackSecuritySelected = false
             isEncryptedSharedPreferences = true
         }
 
         when {
-            isCryptographyByFileSelected -> CryptographyAesFileUi(fileDir)
-            isCryptographySelected -> CryptographyAesUi()
+            isCryptographyAesByFileSelected -> CryptographyAesFileUi(fileDir)
+            isCryptographyAesSelected -> CryptographyAesUi()
+            isCryptographyRsaSelected -> CryptographyRsaUi()
             isCryptographyByFileJetpackSecuritySelected -> CryptographyJetpackSecurityFileUi(fileDir)
             isEncryptedSharedPreferences -> EncryptedSharedPreferencesUi()
         }
@@ -231,6 +251,67 @@ fun CryptographyAesUi() {
             decryptionOutput = cryptography.decrypt(
                 encryptionIv, encryptionOutput
             )
+        }
+    ) { Text("Decrypt") }
+
+    Text("Decrypted:")
+    Text(
+        text = decryptionOutput,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+fun CryptographyRsaUi() {
+    var input by remember {
+        mutableStateOf("")
+    }
+
+    var encryptionOutput by remember {
+        mutableStateOf("")
+    }
+
+    var decryptionOutput by remember {
+        mutableStateOf("")
+    }
+
+    val context = LocalContext.current
+    val cryptography = CryptographyRsa(context)
+
+    Text("Algorithm:")
+    Text(
+        text = cryptography.transformation,
+        fontWeight = FontWeight.Bold
+    )
+
+    TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 8.dp),
+        value = input,
+        onValueChange = { input = it },
+        label = { Text("Input") }
+    )
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            encryptionOutput = cryptography.encrypt(input)
+        }
+    ) { Text("Encrypt") }
+
+    Text("Encrypted output:")
+    Text(
+        text = encryptionOutput,
+        fontWeight = FontWeight.Bold
+    )
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            decryptionOutput = cryptography.decrypt(encryptionOutput)
         }
     ) { Text("Decrypt") }
 
