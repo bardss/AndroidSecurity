@@ -5,8 +5,10 @@ import android.util.Base64
 import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStreamReader
 
 
 class EncryptedLocalDatabase(
@@ -39,9 +41,13 @@ class EncryptedLocalDatabase(
     fun readEncryptedFile(): String {
         val dir = File(context.filesDir.parentFile, "shared_prefs")
         val encryptedFile = File(dir, "$fileName.xml")
-        return FileInputStream(encryptedFile).use {
-            val bytesArray = it.readBytes()
-            Base64.encodeToString(bytesArray, Base64.DEFAULT)
+        return encryptedFile.readText(Charsets.UTF_8)
+    }
+
+    fun clearDatabase() {
+        with (sharedPreferences.edit()) {
+            clear()
+            apply()
         }
     }
 

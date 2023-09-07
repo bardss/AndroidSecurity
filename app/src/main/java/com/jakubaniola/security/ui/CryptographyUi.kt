@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -42,10 +44,13 @@ fun CryptographyUi(fileDir: File) {
         mutableStateOf(false)
     }
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .verticalScroll(scrollState)
     ) {
         Text(
             text = "Type:",
@@ -346,9 +351,17 @@ fun EncryptedSharedPreferencesUi() {
         onClick = {
             localDatabase.write(inputKey, inputValue)
             output = localDatabase.read()
-//            encryptedFile = localDatabase.readEncryptedFile()
+            encryptedFile = localDatabase.readEncryptedFile()
         }
     ) { Text("Save to encrypted database") }
+
+    Button(
+        modifier = Modifier
+            .padding(8.dp, 8.dp),
+        onClick = {
+            localDatabase.clearDatabase()
+        }
+    ) { Text("Clear database") }
 
     Text("All values in database:")
     Text(
