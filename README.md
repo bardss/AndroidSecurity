@@ -23,10 +23,21 @@ TODO:
 5. Block screen recording and screenshots
 
 ## Materials
-- Guide to Encryption & Decryption in Android (Keystore, Ciphers, and more) https://www.youtube.com/watch?v=aaSck7jBDbw
-- Secure data in Android https://proandroiddev.com/secure-data-in-android-encryption-7eda33e68f58
-- Encryption Tutorial For Android: Getting Started https://www.kodeco.com/778533-encryption-tutorial-for-android-getting-started?page=2
-- Google Help: Remediation for Unsafe Cryptographic Encryption https://support.google.com/faqs/answer/9450925?hl=en
+
+### Android
+#### Artictles
+- [Guide to Encryption & Decryption in Android (Keystore, Ciphers, and more)](https://www.youtube.com/watch?v=aaSck7jBDbw)
+- [Secure data in Android](https://proandroiddev.com/secure-data-in-android-encryption-7eda33e68f58)
+- [Encryption Tutorial For Android: Getting Started](https://www.kodeco.com/778533-encryption-tutorial-for-android-getting-started?page=2)
+- [Google Help: Remediation for Unsafe Cryptographic Encryption](https://support.google.com/faqs/answer/9450925?hl=en)
+
+#### Tools
+- [Frida - Dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.](https://frida.re/)
+
+### General
+#### Courses
+- [Google Cybersecurity Professional Certificate](https://www.coursera.org/professional-certificates/google-cybersecurity?)
+- [An Introduction to Cryptography](https://www.coursera.org/learn/an-introduction-to-cryptography)
 
 ## FAQ
 
