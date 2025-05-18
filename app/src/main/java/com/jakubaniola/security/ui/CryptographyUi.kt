@@ -1,16 +1,22 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.jakubaniola.security.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,105 +28,123 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jakubaniola.security.utils.cryptography.legacy.CryptographyRsa
-import com.jakubaniola.security.utils.cryptography.legacy.CryptographyAes
-import com.jakubaniola.security.utils.cryptography.legacy.CryptographyAesFile
 import com.jakubaniola.security.utils.cryptography.jetpacksecurity.CryptographyJetpackSecurityFile
 import com.jakubaniola.security.utils.cryptography.jetpacksecurity.EncryptedLocalDatabase
+import com.jakubaniola.security.utils.cryptography.legacy.CryptographyAes
+import com.jakubaniola.security.utils.cryptography.legacy.CryptographyAesFile
+import com.jakubaniola.security.utils.cryptography.legacy.CryptographyRsa
 import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
-fun CryptographyUi(fileDir: File) {
-    var isCryptographyAesByFileSelected by remember {
-        mutableStateOf(true)
-    }
-    var isCryptographyAesSelected by remember {
-        mutableStateOf(false)
-    }
-    var isCryptographyRsaSelected by remember {
-        mutableStateOf(false)
-    }
-    var isCryptographyByFileJetpackSecuritySelected by remember {
-        mutableStateOf(false)
-    }
-    var isEncryptedSharedPreferences by remember {
-        mutableStateOf(false)
-    }
+fun CryptographyScreen(fileDir: File) {
+    var isCryptographyAesByFileSelected by remember { mutableStateOf(true) }
+    var isCryptographyAesSelected by remember { mutableStateOf(false) }
+    var isCryptographyRsaSelected by remember { mutableStateOf(false) }
+    var isCryptographyByFileJetpackSecuritySelected by remember { mutableStateOf(false) }
+    var isEncryptedSharedPreferences by remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .verticalScroll(scrollState)
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Text(
-            text = "Type:",
-            fontWeight = FontWeight.Bold
-        )
-
-        RadioTextButton(
-            text = "Legacy: Cryptography File with AES",
-            selected = isCryptographyAesByFileSelected,
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            isCryptographyAesByFileSelected = true
-            isCryptographyAesSelected = false
-            isCryptographyRsaSelected = false
-            isCryptographyByFileJetpackSecuritySelected = false
-            isEncryptedSharedPreferences = false
-        }
-
-        RadioTextButton(
-            text = "Legacy: Cryptography Text with AES",
-            selected = isCryptographyAesSelected,
-        ) {
-            isCryptographyAesByFileSelected = false
-            isCryptographyAesSelected = true
-            isCryptographyRsaSelected = false
-            isCryptographyByFileJetpackSecuritySelected = false
-            isEncryptedSharedPreferences = false
-        }
-
-        RadioTextButton(
-            text = "Legacy: Cryptography Text with RSA",
-            selected = isCryptographyRsaSelected,
-        ) {
-            isCryptographyAesByFileSelected = false
-            isCryptographyAesSelected = false
-            isCryptographyRsaSelected = true
-            isCryptographyByFileJetpackSecuritySelected = false
-            isEncryptedSharedPreferences = false
-        }
-
-        RadioTextButton(
-            text = "Jetpack Security: Cryptography File with AES",
-            selected = isCryptographyByFileJetpackSecuritySelected,
-        ) {
-            isCryptographyAesByFileSelected = false
-            isCryptographyAesSelected = false
-            isCryptographyRsaSelected = false
-            isCryptographyByFileJetpackSecuritySelected = true
-            isEncryptedSharedPreferences = false
-        }
-        RadioTextButton(
-            text = "Jetpack Security: EncryptedSharedPreferences with AES",
-            selected = isEncryptedSharedPreferences,
-        ) {
-            isCryptographyAesByFileSelected = false
-            isCryptographyAesSelected = false
-            isCryptographyRsaSelected = false
-            isCryptographyByFileJetpackSecuritySelected = false
-            isEncryptedSharedPreferences = true
-        }
-
-        when {
-            isCryptographyAesByFileSelected -> CryptographyAesFileUi(fileDir)
-            isCryptographyAesSelected -> CryptographyAesUi()
-            isCryptographyRsaSelected -> CryptographyRsaUi()
-            isCryptographyByFileJetpackSecuritySelected -> CryptographyJetpackSecurityFileUi(fileDir)
-            isEncryptedSharedPreferences -> EncryptedSharedPreferencesUi()
+            Text(
+                text = "Cryptography Demo",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            HorizontalDivider()
+            Text(
+                text = "Type:",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    RadioTextButton(
+                        text = "Legacy: Cryptography File with AES",
+                        selected = isCryptographyAesByFileSelected,
+                    ) {
+                        isCryptographyAesByFileSelected = true
+                        isCryptographyAesSelected = false
+                        isCryptographyRsaSelected = false
+                        isCryptographyByFileJetpackSecuritySelected = false
+                        isEncryptedSharedPreferences = false
+                    }
+                    RadioTextButton(
+                        text = "Legacy: Cryptography Text with AES",
+                        selected = isCryptographyAesSelected,
+                    ) {
+                        isCryptographyAesByFileSelected = false
+                        isCryptographyAesSelected = true
+                        isCryptographyRsaSelected = false
+                        isCryptographyByFileJetpackSecuritySelected = false
+                        isEncryptedSharedPreferences = false
+                    }
+                    RadioTextButton(
+                        text = "Legacy: Cryptography Text with RSA",
+                        selected = isCryptographyRsaSelected,
+                    ) {
+                        isCryptographyAesByFileSelected = false
+                        isCryptographyAesSelected = false
+                        isCryptographyRsaSelected = true
+                        isCryptographyByFileJetpackSecuritySelected = false
+                        isEncryptedSharedPreferences = false
+                    }
+                    RadioTextButton(
+                        text = "Jetpack Security: Cryptography File with AES",
+                        selected = isCryptographyByFileJetpackSecuritySelected,
+                    ) {
+                        isCryptographyAesByFileSelected = false
+                        isCryptographyAesSelected = false
+                        isCryptographyRsaSelected = false
+                        isCryptographyByFileJetpackSecuritySelected = true
+                        isEncryptedSharedPreferences = false
+                    }
+                    RadioTextButton(
+                        text = "Jetpack Security: EncryptedSharedPreferences with AES",
+                        selected = isEncryptedSharedPreferences,
+                    ) {
+                        isCryptographyAesByFileSelected = false
+                        isCryptographyAesSelected = false
+                        isCryptographyRsaSelected = false
+                        isCryptographyByFileJetpackSecuritySelected = false
+                        isEncryptedSharedPreferences = true
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(2.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    when {
+                        isCryptographyAesByFileSelected -> CryptographyAesFileUi(fileDir)
+                        isCryptographyAesSelected -> CryptographyAesUi()
+                        isCryptographyRsaSelected -> CryptographyRsaUi()
+                        isCryptographyByFileJetpackSecuritySelected -> CryptographyJetpackSecurityFileUi(fileDir)
+                        isEncryptedSharedPreferences -> EncryptedSharedPreferencesUi()
+                    }
+                }
+            }
         }
     }
 }
@@ -456,3 +480,4 @@ fun EncryptedSharedPreferencesUi() {
         fontWeight = FontWeight.Bold
     )
 }
+
