@@ -1,6 +1,7 @@
 package com.jakubaniola.security.ui
 
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,12 @@ import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
-fun CryptographyScreen(fileDir: File) {
+fun CryptographyScreen(
+    fileDir: File,
+    onBackPressed: () -> Unit,
+) {
+    BackHandler { onBackPressed() }
+
     var isCryptographyAesByFileSelected by remember { mutableStateOf(true) }
     var isCryptographyAesSelected by remember { mutableStateOf(false) }
     var isCryptographyRsaSelected by remember { mutableStateOf(false) }
@@ -480,4 +486,3 @@ fun EncryptedSharedPreferencesUi() {
         fontWeight = FontWeight.Bold
     )
 }
-
