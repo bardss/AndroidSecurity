@@ -14,6 +14,7 @@ Currently:
 4. Legacy: Cryptography RSA - encrypt and decrypt text - Android Lollipop+ (21+)
 5. Jetpack Security (alpha): EncryptedSharedPreferences
 6. Jetpack Security (alpha): Cryptography AES - encrypt and decrypt file
+7. Block screen recording and screenshots
 
 TODO:
 1. Hash functions

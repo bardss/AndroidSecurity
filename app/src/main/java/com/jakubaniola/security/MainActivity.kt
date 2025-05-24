@@ -2,6 +2,7 @@ package com.jakubaniola.security
 
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        blockScreenRecording()
         setContent {
             SecurityTheme {
                 var screen: Screen by remember { mutableStateOf(Screen.Home) }
@@ -48,5 +50,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun blockScreenRecording() {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
     }
 }
