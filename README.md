@@ -21,7 +21,6 @@ TODO:
 2. Proguard
 3. Safe API keys
 4. Certificate pinning
-5. Block screen recording and screenshots
 
 ## Materials
 
