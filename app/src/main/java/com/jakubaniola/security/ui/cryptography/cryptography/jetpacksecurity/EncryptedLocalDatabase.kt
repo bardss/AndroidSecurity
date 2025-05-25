@@ -1,4 +1,4 @@
-package com.jakubaniola.security.utils.cryptography.jetpacksecurity
+package com.jakubaniola.security.ui.cryptography.cryptography.jetpacksecurity
 
 import android.content.Context
 import android.util.Base64

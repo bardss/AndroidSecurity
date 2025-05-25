@@ -1,4 +1,4 @@
-package com.jakubaniola.security.utils.cryptography.legacy
+package com.jakubaniola.security.ui.cryptography.cryptography.legacy
 
 import android.annotation.TargetApi
 import android.content.Context

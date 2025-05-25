@@ -8,8 +8,8 @@ import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.jakubaniola.security.ui.CryptographyScreen
-import com.jakubaniola.security.ui.HomeScreen
+import com.jakubaniola.security.ui.cryptography.CryptographyScreen
+import com.jakubaniola.security.ui.home.HomeScreen
 import java.io.File
 
 

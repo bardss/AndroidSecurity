@@ -1,4 +1,4 @@
-package com.jakubaniola.security.ui
+package com.jakubaniola.security.ui.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
